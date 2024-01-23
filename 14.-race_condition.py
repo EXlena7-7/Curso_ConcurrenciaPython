@@ -6,18 +6,26 @@ logging.basicConfig(level=logging.DEBUG, format='%(threadName)s: %(message)s')
 
 BALANCE =0
 
+lock = threading.Lock()
 
 def depositos():
     global BALANCE  
     
-    for  _ in range(0, 1000000):
-        BALANCE += 1  # Seccion Critica
+    for _ in range(0, 1000000):
+        try:
+            lock.acquire()
+            BALANCE += 1  # Seccion Critica
+            
+        finally:
+            lock.release()
 
+            
 def retiros():
     global BALANCE
 
     for  _ in range(0, 1000000):
-        BALANCE -= 1 # Seccion Critica 
+        with lock:
+            BALANCE -= 1 # Seccion Critica 
 
 if __name__ == '__main__':
     thread1 = threading.Thread(target=depositos)
