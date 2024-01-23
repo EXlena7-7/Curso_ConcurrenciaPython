@@ -13,5 +13,14 @@ def nueva_tarea():
     logging.info(f'El id actual es: {id}')
 
 if __name__ == '__main__':
-    thread = threading.Thread(target=nueva_tarea, name='thread-marjory')
-    thread.start()
+    thread1 = threading.Thread(target=nueva_tarea, name='thread-marjory')
+    thread1.start()
+
+    logging.info(f'Los threads vivos son: {threading.enumerate()}')
+
+    
+    for thread in threading.enumerate():
+        if thread == threading.main_thread():
+            logging.info('Nos encontramos en el thread principal!')
+
+        logging.info(thread)
